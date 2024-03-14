@@ -1,23 +1,34 @@
 'use client';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from 'react';
 
 function Page() {
-  const router = useRouter();
   const [responseData, setResponseData] = useState(null);
+  const searchParams = useSearchParams();
+  const data = searchParams.get('data');
 
-  console.log("DATA:", router.responseData)
+  console.log("DATA:", data);
   useEffect(() => {
-    if (router.responseData) {
-      setResponseData(JSON.parse(router.responseData));
-      console.log(responseData)
+    if (data) {
+      try {
+        const parsedData = JSON.parse(data);
+        setResponseData(parsedData);
+      } catch (error) {
+        console.error('Error parsing data:', error);
+      }
     }
-  }, []);
+  }, [data]);
+
+
   return (
     <div>
-      {responseData ? responseData.details.map((detail, index) => (
-        <h2 key={index}>{detail.airline}</h2>
-      )) : <h2>Loading...</h2>}
+      {responseData ? (
+        responseData.details.map((item, index) => (
+          <p key={index}>{item.airline}</p>
+        ))
+      ) : (
+        <p>Loading!</p>
+      )}
     </div>
   );
 }

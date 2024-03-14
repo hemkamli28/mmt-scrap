@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -31,14 +31,12 @@ function MyForm() {
 
       const data = await response.json();
       console.log(data)
-      router.push('/flightDetails', { responseData: { data } }); // Redirect with data as query params
-      // router.push({
-      //   pathname: '/flightDetails',
-      //   query: { responseData: JSON.stringify(data) }
-      // });
+      
+      router.push(`/flightDetails?data=${JSON.stringify(data)}`);
+      // router.push('/flightDetails', { responseData: data  }); 
+
     } catch (error) {
       console.log(error);
-      // Handle errors (e.g., display an error message)
     }
   };
 
